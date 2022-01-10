@@ -23,10 +23,10 @@ int mode=0;
 int YMin[3]={104,130,72},YMax[3]={130,242,170},YED[2]={1,2};
 
 // Set Red Color {H,S,V}
-int RMin[3]={140,141,142},RMax[3]={201,245,233},RED[2]={0,1};
+int RMin[3]={149,113,51},RMax[3]={255,255,255},RED[2]={1,2};
 
 // Set Green Color {H,S,V}
-int GMin[3]={57,59,94},GMax[3]={88,163,169},GED[2]={0,1};
+int GMin[3]={63,132,40},GMax[3]={93,240,118},GED[2]={0,1};
 
 Mat erosion_src, dilation_src, erosion_dst, dilation_dst;
 Mat imPart;
@@ -188,9 +188,9 @@ void Detection(Mat &dst, Mat &frameTresh, String color)
 		RealHeight = PixtoReal(PixlDis);
 
 		// cout << "Distance : " << PixlDis << " pixel" << endl;
-		cout << "Width  : " << RealWidth << " cm" << endl;
-		cout << "Height : " << RealHeight << " cm" << endl;
-		cout << "Titik  : " << vtc << endl << endl;
+		// cout << "Width  : " << RealWidth << " cm" << endl;
+		// cout << "Height : " << RealHeight << " cm" << endl;
+		// cout << "Titik  : " << vtc << endl << endl;
 
 		Mat imCrop = frameDraw(rect);
 		Mat framePot = Mat::zeros(imCrop.size(), CV_8UC3);
@@ -200,20 +200,28 @@ void Detection(Mat &dst, Mat &frameTresh, String color)
 		imshow("Pot Frame", imCrop);
 		imshow("Not Pot Frame", framePot);
 
-		circle(dst, cvPoint(rect.x, rect.y), 8, Scalar(0, 0, 255), CV_FILLED, LINE_8 );
-		circle(dst, cvPoint(rect.x, rect.y + rect.height), 8, Scalar(0, 0, 255), CV_FILLED, LINE_8 );
-        rectangle(dst, rect,  Scalar(0,0,255), 2, 8, 0);
-		putText(dst, format("Pot Merah %.0f cm", RealHeight) , cvPoint(rect.x + 5, rect.y - 10), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(0,0,255), 1, CV_AA);	
+		circle(dst, cvPoint(rect.x, rect.y), 8, Scalar(0, 255, 255), CV_FILLED, LINE_8);
+		circle(dst, cvPoint(rect.x, rect.y + rect.height), 8, Scalar(0, 255, 255), CV_FILLED, LINE_8);
+		circle(dst, cvPoint(rect.x + rect.width, rect.y), 8, Scalar(0, 255, 255), CV_FILLED, LINE_8);
+
+        rectangle(dst, rect,  Scalar(0, 255, 255), 2, 8, 0);
+
+		if(color == "Biru")
+			putText(dst, format("Pot Biru %.0fx%.0f cm", RealHeight, RealWidth) , cvPoint(rect.x + 5, rect.y - 10), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(0, 255, 255), 1, CV_AA);	
+		else if(color == "Merah")
+			putText(dst, format("Pot Merah %.0fx%.0f cm", RealHeight, RealWidth) , cvPoint(rect.x + 5, rect.y - 10), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(0, 255, 255), 1, CV_AA);	
+		else if(color == "Hijau")
+			putText(dst, format("Pot Hijau %.0fx%.0f cm", RealHeight, RealWidth) , cvPoint(rect.x + 5, rect.y - 10), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(0, 255, 255), 1, CV_AA);	
 	}
 }
 
-void YellowDetect(Mat &frame, Mat &framedst)
+void BlueDetect(Mat &frame, Mat &framedst)
 {
     Mat thresh = GetThresImage(frame, YMin, YMax);
     Mat erosion = Erosion(thresh, YED);
     Mat dilation = Dilation(erosion, YED);
 
-    Detection(framedst, dilation, "Kuning");
+    Detection(framedst, dilation, "Biru");
     imshow("Yellow Treshold", dilation);
 }
 
@@ -246,15 +254,17 @@ int main(int argc,char**argv)
     while(1)
     {
         cap >> frame;
+
+		resize(frame, frame, Size(720, 480), INTER_LINEAR);
         // frame = image;
 
         mode = ELIPSE;
 
         framedst = frame.clone();
 
-        YellowDetect(frame, framedst);
-        // GreenDetect(frame, framedst);
-        // RedDetect(frame, framedst);
+        BlueDetect(frame, framedst);
+        GreenDetect(frame, framedst);
+        RedDetect(frame, framedst);
 
         imshow("Frame Input", frame);
         imshow("Frame Output", framedst);
