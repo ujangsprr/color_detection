@@ -207,11 +207,11 @@ void Detection(Mat &dst, Mat &frameTresh, String color)
         rectangle(dst, rect,  Scalar(0, 255, 255), 2, 8, 0);
 
 		if(color == "Biru")
-			putText(dst, format("Pot Biru %.0fx%.0f cm", RealHeight, RealWidth) , cvPoint(rect.x + 5, rect.y - 10), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(0, 255, 255), 1, CV_AA);	
+			putText(dst, format("Pot Biru %.0fx%.0f cm", RealHeight, RealWidth) , cvPoint(rect.x + 5, rect.y - 10), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(0, 0, 255), 1, CV_AA);	
 		else if(color == "Merah")
-			putText(dst, format("Pot Merah %.0fx%.0f cm", RealHeight, RealWidth) , cvPoint(rect.x + 5, rect.y - 10), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(0, 255, 255), 1, CV_AA);	
+			putText(dst, format("Pot Merah %.0fx%.0f cm", RealHeight, RealWidth) , cvPoint(rect.x + 5, rect.y - 10), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(0, 0, 255), 1, CV_AA);	
 		else if(color == "Hijau")
-			putText(dst, format("Pot Hijau %.0fx%.0f cm", RealHeight, RealWidth) , cvPoint(rect.x + 5, rect.y - 10), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(0, 255, 255), 1, CV_AA);	
+			putText(dst, format("Pot Hijau %.0fx%.0f cm", RealHeight, RealWidth) , cvPoint(rect.x + 5, rect.y - 10), FONT_HERSHEY_COMPLEX_SMALL, 0.8, Scalar(0, 0, 255), 1, CV_AA);	
 	}
 }
 
